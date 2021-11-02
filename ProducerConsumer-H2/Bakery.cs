@@ -14,6 +14,8 @@ namespace ProducerConsumer_H2
         private static Random rand = new Random();
         private Queue<int> breadTray = new Queue<int>();
 
+        public ActionMessageEvent BakeryInfo { get; set; }
+
         public Bakery()
         {
             Thread consumerThread = new Thread(Consumer);
@@ -36,7 +38,7 @@ namespace ProducerConsumer_H2
                     for (int i = 0; i < rand.Next(1,4); i++)
                     {
                         breadTray.Enqueue(i);
-                        Console.WriteLine("Produced: " + (i + 1));
+                        BakeryInfo.Invoke("Produced: " + (i + 1));
                     }
                     Monitor.PulseAll(breadTray);
                     Thread.Sleep(600);
@@ -53,10 +55,10 @@ namespace ProducerConsumer_H2
                     while (breadTray.Count == 0)
                     {
                         Monitor.PulseAll(breadTray);
-                        Console.WriteLine("Consumer waits..");
+                        BakeryInfo.Invoke("Consumer waits..");
                         Monitor.Wait(breadTray);
                     }
-                    Console.WriteLine("Consumed: " + (breadTray.Dequeue() + 1));
+                    BakeryInfo.Invoke("Consumed: " + (breadTray.Dequeue() + 1));
                     Thread.Sleep(600);
                 }
             }

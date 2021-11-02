@@ -8,6 +8,12 @@ namespace ProducerConsumer_H2
         static void Main(string[] args)
         {
             Bakery bakery = new Bakery();
+            bakery.BakeryInfo += BakeryInfoEvent;
+        }
+
+        private static void BakeryInfoEvent(string message)
+        {
+            Console.WriteLine(message);
         }
     }
 }
